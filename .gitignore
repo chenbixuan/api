@@ -4,6 +4,7 @@ node_modules
 .DS_Store
 package-lock.json
 yarn-lock.json
+run
 typings
 logs
 config/config.default.ts
