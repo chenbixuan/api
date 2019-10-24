@@ -1,0 +1,16 @@
+{
+  "development": {
+    "username": "hf_test",
+    "password": "jksf$jfnds@cas",
+    "database": "hf_test",
+    "host": "120.25.104.115",
+    "dialect": "mysql"
+  },
+  "test": {
+    "username": "root",
+    "password": null,
+    "database": "egg-sequelize-ts-unittest",
+    "host": "127.0.0.1",
+    "dialect": "mysql"
+  }
+}

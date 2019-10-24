@@ -1,0 +1,9 @@
+node_modules
+.idea
+.vscode
+.DS_Store
+package-lock.json
+yarn-lock.json
+typings
+logs
+config/config.default.ts
