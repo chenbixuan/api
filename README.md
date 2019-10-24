@@ -51,3 +51,4 @@ npm test
 [sequelize]: http://docs.sequelizejs.com/
 [migrations]: http://docs.sequelizejs.com/manual/tutorial/migrations.html
 [factory-girl]: https://github.com/aexmachina/factory-girl
+
