@@ -3,7 +3,7 @@
 import { Context } from 'egg';
 import { CreateOptions } from 'sequelize';
 
-class WxUser extends global.BaseService {
+export default class WxUser extends global.BaseService {
   constructor (ctx: Context) {
     super(ctx, ctx.model.WxUser);
   }
@@ -17,5 +17,3 @@ class WxUser extends global.BaseService {
   }
 
 }
-
-module.exports = WxUser;

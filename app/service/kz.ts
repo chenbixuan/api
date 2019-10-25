@@ -2,10 +2,8 @@
 
 import { Context } from 'egg';
 
-class Kz extends global.BaseService {
+export default class Kz extends global.BaseService {
   constructor (ctx: Context) {
     super(ctx, ctx.model.Kz);
   }
 }
-
-module.exports = Kz;

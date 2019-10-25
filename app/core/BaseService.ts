@@ -5,6 +5,10 @@ import {Model, CreateOptions} from 'sequelize';
 
 class BaseModel extends Model {};
 
+interface IData {
+  [key: string]: any
+}
+
 export default class BaseService extends Service {
   public model: typeof BaseModel;
 
@@ -30,7 +34,7 @@ export default class BaseService extends Service {
     return info;
   }
 
-  async create(info: CreateOptions) {
+  async create(info: CreateOptions): Promise<IData> {
     return this.model.create(info);
   }
 

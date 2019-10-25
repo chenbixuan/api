@@ -7,4 +7,7 @@ yarn-lock.json
 run
 typings
 logs
+app/**/*.js
+config/**/*.js
 config/config.default.ts
+test/**/*.js

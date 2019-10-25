@@ -2,7 +2,7 @@
 
 import { Context } from 'egg';
 
-module.exports = () => {
+export default () => {
   return async function (ctx: Context, next) {
     if (ctx.req.method === 'GET') {
       await next();

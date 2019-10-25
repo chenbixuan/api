@@ -3,17 +3,19 @@
   "version": "1.0.0",
   "description": "The egg ts example project that uses egg-sequelize plugin.",
   "private": true,
+  "app": "cbx",
   "scripts": {
     "dev": "egg-bin dev",
     "test": "NODE_ENV=test npm run sequelize -- db:migrate && egg-bin test",
     "debug": "egg-bin debug",
     "debug-test": "npm run test-local",
-    "start": "egg-scripts start --daemon",
-    "stop": "egg-scripts stop",
+    "start": "egg-scripts start --daemon --title=$npm_package_app --workers=1",
+    "stop": "egg-scripts stop --title=$npm_package_app",
     "cov": "egg-bin cov",
     "ci": "npm run cov",
     "autod": "autod",
-    "sequelize": "sequelize --"
+    "sequelize": "sequelize --",
+    "prestart": "npm run cov && tsc"
   },
   "dependencies": {
     "egg": "^2.10.0",
