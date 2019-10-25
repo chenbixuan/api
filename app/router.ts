@@ -36,7 +36,7 @@ export default function(app: Application) {
     const { dir, name } = path.parse(fullPath.replace(pre + '/', ''));
     const prefix = dir ? dir + '/' + name : name;
     const key = prefix.split('/').join('.');
-    app.resources(name, '/' + prefix, _.get(app.controller, key));
+    app.resources(name, '/api/' + prefix, _.get(app.controller, key));
   });
 
 }
