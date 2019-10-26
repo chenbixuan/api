@@ -14,11 +14,17 @@ export default class BaseController extends Controller {
 
   async index() {
     const ctx = this.ctx;
-    const query = {
-      limit: ctx.helper.parseInt(ctx.query.limit, 10),
-      offset: ctx.helper.parseInt(ctx.query.offset),
+    const query = ctx.query;
+    const limit = ctx.helper.parseInt(query.limit, 10);
+    const offset = ctx.helper.parseInt(query.offset);
+    delete query.limit;
+    delete query.offset;
+    const options = {
+      limit,
+      offset,
+      where: query
     };
-    ctx.body = await this.one.list(query);
+    ctx.body = await this.one.list(options);
   }
 
   async show() {

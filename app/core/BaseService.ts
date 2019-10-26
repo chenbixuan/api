@@ -1,7 +1,7 @@
 'use strict';
 
 import {Service, Context} from 'egg';
-import {Model, CreateOptions} from 'sequelize';
+import {Model, CreateOptions, FindAndCountOptions} from 'sequelize';
 
 class BaseModel extends Model {};
 
@@ -17,13 +17,11 @@ export default class BaseService extends Service {
     this.model = model;
   }
 
-  async list({ offset = 0, limit = 10 }: { offset: number; limit: number; }) {
-    if (limit === 0) limit = 10;
-    return this.model.findAndCountAll({
-      offset,
-      limit,
-      order: [[ 'created_at', 'desc' ], [ 'id', 'desc' ]],
-    });
+  async list(options: FindAndCountOptions = {}): Promise<IData> {
+    options = options || {};
+    if (!options.order || options.order === []) options.order = [[ 'id', 'desc' ]];
+    if (!options.limit) options.limit = 10;
+    return this.model.findAndCountAll(options);
   }
 
   async find(id: number) {
@@ -38,7 +36,7 @@ export default class BaseService extends Service {
     return this.model.create(info);
   }
 
-  async update({ id, updates }: { id: number; updates: object }) {
+  async update({ id, updates }: { id: number; updates: object }): Promise<IData> {
     const info = await this.model.findByPk(id);
     if (!info) {
       this.ctx.throw(404, `${this.model.name} not found`);
