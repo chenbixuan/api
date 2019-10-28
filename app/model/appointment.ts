@@ -3,11 +3,21 @@
 import { Application } from 'egg';
 
 export default function(app: Application) {
-  const { STRING, ENUM, DATE, INTEGER } = app.Sequelize;
+  const { STRING, ENUM, DATE, INTEGER, FLOAT } = app.Sequelize;
   const Appointment = app.model.define('appointment', {
     no: {
       type: STRING(32),
       comment: '单号',
+    },
+    price: {
+      type: FLOAT,
+      defaultValue: 0,
+      comment: '总价'
+    },
+    cardDiscounts: {
+      type: FLOAT,
+      defaultValue: 0,
+      comment: '优惠券抵扣金额'
     },
     type: {
       type: ENUM('HFTY', 'ZTSY', 'CJYP', 'DZFW'),
@@ -32,7 +42,11 @@ export default function(app: Application) {
     shopId: {
       type: INTEGER,
       comment: '店铺id',
-    }
+    },
+    userId: {
+      type: INTEGER,
+      comment: '用户id'
+    },
   }, {
     tableName: 'appointment',
   });

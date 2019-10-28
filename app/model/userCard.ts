@@ -4,7 +4,11 @@ import { Application } from 'egg';
 
 export default function(app: Application) {
   const { STRING, ENUM, INTEGER } = app.Sequelize;
-  const Card = app.model.define('card', {
+  const UserCard = app.model.define('userCard', {
+    no: {
+      type: STRING(32),
+      comment: '券号',
+    },
     name: {
       type: STRING(32),
       allowNull: false,
@@ -30,28 +34,30 @@ export default function(app: Application) {
       defaultValue: 'NONE',
       comment: '限定用户：NEW-新用户，OLD-老用户，NONE-不限制',
     },
-    count: {
-      type: INTEGER,
-      defaultValue: 0,
-      comment: '发放数量',
-    },
-    remain: {
-      type: INTEGER,
-      defaultValue: 0,
-      comment: '剩余数量',
-    },
     shopId: {
       type: INTEGER,
       defaultValue: 0,
       comment: '限定门店，0-不限制',
     },
+    userId: {
+      type: INTEGER,
+      allowNull: false,
+      comment: '所属用户'
+    },
+    cardId: {
+      type: INTEGER,
+      comment: '所属card',
+    },
   }, {
-    tableName: 'card',
+    tableName: 'user_card',
+    hooks: {
+      beforeCreate: (info) => {
+        // @ts-ignore
+        info.no = '123';
+      },
+    }
   });
 
-  return class extends Card {
-    static associate() {
-      app.model.Card.hasMany(app.model.UserCard, { as: 'userCards', foreignKey: 'cardId' });
-    }
+  return class extends UserCard {
   }
 }

@@ -3,7 +3,7 @@
 import { Application } from 'egg';
 
 export default function(app: Application) {
-  const { STRING } = app.Sequelize;
+  const { STRING, BOOLEAN, INTEGER } = app.Sequelize;
   const Shop = app.model.define('shop', {
     name: {
       type: STRING(32),
@@ -26,17 +26,23 @@ export default function(app: Application) {
       comment: '公交地铁地址',
     },
     pic: {
-      type: STRING(255),
+      type: INTEGER,
       allowNull: false,
       comment: '门店背景图',
-    }
+    },
+    enable: {
+      type: BOOLEAN,
+      defaultValue: true,
+      comment: '是否启用',
+    },
   }, {
     tableName: 'shop',
+    paranoid: true,
   });
 
   return class extends Shop {
     static associate() {
-      app.model.Shop.hasMany(app.model.Card, { as: 'cards', foreignKey: 'shopId', onDelete: 'CASCADE', hooks: true });
+      app.model.Shop.hasMany(app.model.Card, { as: 'cards', foreignKey: 'shopId', hooks: true, onDelete: 'CASCADE' });
     }
   }
 }
