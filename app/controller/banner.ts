@@ -20,6 +20,13 @@ export default class BannerController extends global.BaseController {
 
     const banners = await this.service.banner.model.findAll({
       where,
+      include: [
+        {
+          model: this.service.file.model,
+          as: 'file',
+          attributes: ['name', 'url'],
+        }
+      ],
     }, {
       order: [
         ['sort', 'DESC'],

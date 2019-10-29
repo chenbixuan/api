@@ -20,8 +20,8 @@ export default function(app: Application) {
       defaultValue: 0,
       comment: '文件大小',
     },
-    path: {
-      type: STRING,
+    url: {
+      type: STRING(512),
       allowNull: false,
       comment: '相对路径',
     },
