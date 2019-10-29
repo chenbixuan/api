@@ -1,6 +1,7 @@
 'use strict';
 
 import { Application } from 'egg';
+import { Op } from 'sequelize';
 
 export default function(app: Application) {
   const { STRING, ENUM, INTEGER } = app.Sequelize;
@@ -30,6 +31,17 @@ export default function(app: Application) {
   });
 
   return class extends File {
+    static async getFile(id: string | number): Promise<any[]> {
+      if (typeof id === 'number') id = id + '';
+      return app.model.File.findAll({
+        attributes: ['name', 'url'],
+        where: {
+          id: {
+            [Op.in]: id.split(','),
+          }
+        }
+      })
+    }
   }
 }
 

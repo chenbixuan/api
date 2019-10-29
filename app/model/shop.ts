@@ -25,7 +25,7 @@ export default function(app: Application) {
       allowNull: false,
       comment: '公交地铁地址',
     },
-    pic: {
+    picId: {
       type: INTEGER,
       allowNull: false,
       comment: '门店背景图',
@@ -38,11 +38,26 @@ export default function(app: Application) {
   }, {
     tableName: 'shop',
     paranoid: true,
+    hooks: {
+      afterFind: async (info) => {
+        if (!info) return;
+        if (Array.isArray(info)) {
+          for (const i of info) {
+            // @ts-ignore
+            i.dataValues.files = await app.model.File.getFile(i.picId);
+          }
+        } else {
+          // @ts-ignore
+          info.dataValues.files = await app.model.File.getFile(info.picId);
+        }
+      }
+    }
   });
 
   return class extends Shop {
     static associate() {
       app.model.Shop.hasMany(app.model.Card, { as: 'cards', foreignKey: 'shopId', hooks: true, onDelete: 'CASCADE' });
+      app.model.Shop.belongsTo(app.model.File, { as: 'file', foreignKey: 'picId' });
     }
   }
 }

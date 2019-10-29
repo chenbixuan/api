@@ -39,7 +39,7 @@ export default function(app: Application) {
 
   return class extends Banner {
     static associate() {
-      return app.model.Banner.belongsTo(app.model.File, { as: 'file', foreignKey: 'pic_id' });
+      app.model.Banner.belongsTo(app.model.File, { as: 'file', foreignKey: 'picId' });
     }
   }
 }
