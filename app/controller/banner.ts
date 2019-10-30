@@ -1,7 +1,7 @@
 'use strict';
 
 import { Context } from 'egg';
-import _ from 'lodash'
+import _ from 'lodash';
 
 export default class BannerController extends global.BaseController {
   constructor (ctx: Context) {
@@ -18,7 +18,7 @@ export default class BannerController extends global.BaseController {
     if (type) where.type = type;
     if (enable) where.enable = enable === 'true';
 
-    const banners = await this.service.banner.model.findAll({
+    const banners = await this.one.model.findAll({
       where,
       include: [
         {
@@ -27,6 +27,7 @@ export default class BannerController extends global.BaseController {
           attributes: ['name', 'url'],
         }
       ],
+    // @ts-ignore
     }, {
       order: [
         ['sort', 'DESC'],

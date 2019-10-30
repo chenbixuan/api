@@ -1,14 +1,13 @@
 'use strict';
 
 import { Context } from 'egg';
-// import { CreateOptions, FindAndCountOptions} from 'sequelize';
 import moment from 'moment';
 
 interface IData {
   [key: string]: any,
 }
 
-class UserCard extends global.BaseService {
+export default class UserCard extends global.BaseService {
   constructor (ctx: Context) {
     super(ctx, ctx.model.UserCard);
   }
@@ -26,5 +25,3 @@ class UserCard extends global.BaseService {
     return this.model.create(data);
   }
 }
-
-module.exports = UserCard;
