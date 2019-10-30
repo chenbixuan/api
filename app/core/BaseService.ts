@@ -5,7 +5,7 @@ import {Model, CreateOptions, FindAndCountOptions} from 'sequelize';
 
 class BaseModel extends Model {};
 
-interface IData {
+export interface IData {
   [key: string]: any
 }
 
@@ -24,12 +24,12 @@ export default class BaseService extends Service {
     return this.model.findAndCountAll(options);
   }
 
-  async find(id: number) {
+  async find(id: number): Promise<IData> {
     const info = await this.model.findByPk(id);
     if (!info) {
       this.ctx.throw(404, `${this.model.name} not found`);
     }
-    return info;
+    return <IData>info;
   }
 
   async create(info: CreateOptions): Promise<IData> {

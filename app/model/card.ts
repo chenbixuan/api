@@ -30,6 +30,11 @@ export default function(app: Application) {
       defaultValue: 'NONE',
       comment: '限定用户：NEW-新用户，OLD-老用户，NONE-不限制',
     },
+    limitType: {
+      type: ENUM('REG', 'SHARE', 'NONE'),
+      defaultValue: 'NONE',
+      comment: '领取条件：REG：新用户注册，SHARE：分享获取，NONE-不限制',
+    },
     count: {
       type: INTEGER,
       defaultValue: 0,
@@ -42,11 +47,16 @@ export default function(app: Application) {
     },
     shopId: {
       type: INTEGER,
-      defaultValue: 0,
       comment: '限定门店，0-不限制',
     },
   }, {
     tableName: 'card',
+    hooks: {
+      beforeCreate: (info) => {
+        // @ts-ignore
+        if (!info.remain) info.remain = info.count;
+      }
+    }
   });
 
   return class extends Card {

@@ -24,6 +24,7 @@
     "egg-scripts": "^2.11.1",
     "egg-sequelize": "^5.0.0",
     "lodash": "^4.17.15",
+    "moment": "^2.24.0",
     "mysql2": "^1.6.1"
   },
   "devDependencies": {
