@@ -15,10 +15,11 @@ export default class BaseController extends Controller {
   async index() {
     const ctx = this.ctx;
     const query = ctx.query;
-    const limit = ctx.helper.parseInt(query.limit, 10);
-    const offset = ctx.helper.parseInt(query.offset);
-    delete query.limit;
-    delete query.offset;
+    const limit = ctx.helper.parseInt(query.pageSize, 10);
+    const page = ctx.helper.parseInt(query.page, 1);
+    const offset = (page - 1) * limit;
+    delete query.pageSize;
+    delete query.page;
     const options = {
       limit,
       offset,
