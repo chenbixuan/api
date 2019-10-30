@@ -11,6 +11,7 @@
     "debug-test": "npm run test-local",
     "start": "egg-scripts start --daemon --title=$npm_package_app --workers=1",
     "stop": "egg-scripts stop --title=$npm_package_app",
+    "restart": "npm run stop && npm run start",
     "cov": "egg-bin cov",
     "ci": "npm run cov",
     "autod": "autod",
