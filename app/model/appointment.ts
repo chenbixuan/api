@@ -3,7 +3,7 @@
 import { Application } from 'egg';
 
 export default function(app: Application) {
-  const { STRING, ENUM, DATE, INTEGER, FLOAT } = app.Sequelize;
+  const { STRING, ENUM, INTEGER, FLOAT, DATEONLY } = app.Sequelize;
   const Appointment = app.model.define('appointment', {
     no: {
       type: STRING(32),
@@ -30,9 +30,9 @@ export default function(app: Application) {
       comment: '状态；WAITING-未完成，FINISHED-已完成，CANCELED-已取消',
     },
     date: {
-      type: DATE(6),
+      type: DATEONLY,
       allowNull: false,
-      comment: '',
+      comment: '日期',
     },
     period: {
       type: STRING(12),
@@ -41,16 +41,36 @@ export default function(app: Application) {
     },
     shopId: {
       type: INTEGER,
+      allowNull: false,
       comment: '店铺id',
     },
     userId: {
       type: INTEGER,
+      allowNull: false,
       comment: '用户id'
     },
   }, {
     tableName: 'appointment',
+    hooks: {
+      afterFind: async (instances) => {
+        if (!instances) return;
+
+        if (Array.isArray(instances)) {
+          for (const i of instances) {
+            // @ts-ignore
+            i.dataValues.shop = await i.getShop({ hooks: false });
+          }
+        } else {
+          // @ts-ignore
+          instances.dataValues.shop = await instances.getShop({ hooks: false });
+        }
+      }
+    },
   });
 
   return class extends Appointment {
+    static associate() {
+      app.model.Appointment.belongsTo(app.model.Shop, { as: 'shop', foreignKey: 'shopId' });
+    }
   }
 }

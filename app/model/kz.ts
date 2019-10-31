@@ -39,7 +39,7 @@ export default function(app: Application) {
           info.dataValues.files = await app.model.File.getFile(info.picIds);
         }
       }
-    }
+    },
   });
 
   return class extends Kz {

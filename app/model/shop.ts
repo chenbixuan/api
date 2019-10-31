@@ -57,6 +57,7 @@ export default function(app: Application) {
   return class extends Shop {
     static associate() {
       app.model.Shop.hasMany(app.model.Card, { as: 'cards', foreignKey: 'shopId' });
+      app.model.Shop.hasMany(app.model.Appointment, { as: 'appointments', foreignKey: 'shopId' });
       app.model.Shop.belongsTo(app.model.File, { as: 'file', foreignKey: 'picId' });
     }
   }
