@@ -59,10 +59,26 @@ export default function(app: Application) {
           for (const i of instances) {
             // @ts-ignore
             i.dataValues.shop = await i.getShop({ hooks: false });
+            // @ts-ignore
+            i.dataValues.wxUser = await app.model.WxUser.findOne({
+              attributes: ['id', 'nickname'],
+              where: {
+                // @ts-ignore
+                userId: i.userId,
+              }
+            });
           }
         } else {
           // @ts-ignore
           instances.dataValues.shop = await instances.getShop({ hooks: false });
+          // @ts-ignore
+          instances.dataValues.wxUser = await app.model.WxUser.findOne({
+            // attributes: ['id', 'nickname'],
+            where: {
+              // @ts-ignore
+              userId: instances.userId,
+            }
+          });
         }
       }
     },
