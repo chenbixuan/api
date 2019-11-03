@@ -80,7 +80,28 @@ export default function(app: Application) {
             }
           });
         }
-      }
+      },
+      beforeUpdate: async (instance) => {
+        // @ts-ignore
+        const { status, userId, price, cardDiscounts } = instance;
+        // @ts-ignore
+        const previousStatus = instance.previous('status');
+        if (previousStatus === 'WAITING' && status === 'FINISHED') {
+          // 完成订单，增加积分
+          const wxUser = await app.model.WxUser.findOne({
+            where: { userId }
+          });
+          const realPrice = price - cardDiscounts;
+          // @ts-ignore
+          wxUser.jf += realPrice;
+          // @ts-ignore
+          wxUser.appointmentCount += 1;
+          // @ts-ignore
+          wxUser.appointmentAmount += realPrice;
+          // @ts-ignore
+          await wxUser.save();
+        }
+      },
     },
   });
 
