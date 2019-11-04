@@ -6,6 +6,7 @@ global.BaseController = BaseController.default;
 
 module.exports = app => {
     app.config.coreMiddleware.unshift('transaction');
+    app.config.coreMiddleware.unshift('auth');
 
     if (app.config.env === 'local' || app.config.env === 'unittest') {
         app.beforeStart(async () => {

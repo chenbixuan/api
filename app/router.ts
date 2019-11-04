@@ -37,6 +37,9 @@ export default function(app: Application) {
     const prefix = dir ? dir + '/' + name : name;
     const key = prefix.split('/').join('.');
     app.resources(name, '/api/' + prefix, _.get(app.controller, key));
+    // 重复创建，代码里面验证登录状态
+    app.resources(name, '/api/' + prefix, app.jwt, _.get(app.controller, key));
   });
 
+  app.router.post('/api/login', app.controller.user.login);
 }

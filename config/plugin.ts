@@ -4,9 +4,24 @@ import { EggPlugin } from 'egg';
 
 const plugin: EggPlugin = {};
 
-plugin.sequelize = {
-  package: 'egg-sequelize',
+// plugin.passport = {
+//   enable: true,
+//   package: 'egg-passport',
+// };
+//
+// plugin.passwordLocal = {
+//   enable: true,
+//   package: 'passport-local',
+// };
+
+plugin.jwt = {
   enable: true,
+  package: 'egg-jwt'
+};
+
+plugin.sequelize = {
+  enable: true,
+  package: 'egg-sequelize',
 };
 
 plugin.cors = {
