@@ -1,5 +1,26 @@
+import axios from 'axios';
+
+import wx from './wx';
 
 export default {
+  async get(url, config = {}) {
+    try {
+      const { data } = await axios.get(url, config);
+      return data;
+    } catch (e) {
+      // @ts-ignore
+      this.ctx.throw(e);
+    }
+  },
+  async post(url, body, config = {}) {
+    try {
+      const { data } = await axios.post(url, body, config);
+      return data;
+    } catch (e) {
+      // @ts-ignore
+      this.ctx.throw(e);
+    }
+  },
   parseInt(str: string | number, defaultValue = 0) {
     if (typeof str === 'number') return str;
     if (!str) return defaultValue;
@@ -31,5 +52,21 @@ export default {
     }
 
     return str;
-  }
+  },
+  /**
+   * 加密登录信息
+   * @param user: { 'id', 'username', 'phoneNumber' }
+   */
+  jwtSign(user) {
+    // @ts-ignore
+    const { app } = this
+    return app.jwt.sign({
+      id: user.id,
+      username: user.username,
+      phoneNumber: user.phoneNumber,
+    }, app.config.jwt.secret, {
+      expiresIn: '1h'
+    });
+  },
+  ...wx,
 }

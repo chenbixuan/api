@@ -32,6 +32,7 @@ export default function(app: Application) {
     })
   };
 
+  app.router.get('/api/wxUser/getOpenId', app.controller.wxUser.getOpenId);
   readDir(pre, (fullPath: string) => {
     const { dir, name } = path.parse(fullPath.replace(pre + '/', ''));
     const prefix = dir ? dir + '/' + name : name;

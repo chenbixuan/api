@@ -14,6 +14,14 @@ export default class WxUserController extends global.BaseController {
     ctx.body = await this.one.serviceInfo(this.ctx.helper.parseInt(ctx.params.id));
   }
 
+  async getOpenId() {
+    //openid, session_key, expires_in
+    const { openid: openId } = await this.ctx.helper.code2Session(this.ctx.query.code);
+    this.ctx.body = {
+      openId,
+    };
+  }
+
   async index () {
     const ctx = this.ctx;
     const { search } = ctx.query;

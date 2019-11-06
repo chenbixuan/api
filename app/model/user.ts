@@ -29,7 +29,7 @@ export default function(app: Application) {
     hooks: {
       beforeCreate: async (data) => {
         // @ts-ignore
-        data.password = bcrypt.hashSync(data.password, 10);
+        if (data.password) data.password = bcrypt.hashSync(data.password, 10);
       },
     },
   });

@@ -25,7 +25,6 @@ export default function(app: Application) {
     },
     title: {
       type: STRING(4),
-      defaultValue: 'bm',
       comment: '称谓：bm-保密，xj-小姐，xz-小主，sx-少侠，gz-公子',
     },
     phoneNumber: {
@@ -78,6 +77,7 @@ export default function(app: Application) {
     },
     joinAt: {
       type: DATEONLY,
+      defaultValue: new Date,
       comment: '入会时间',
     },
     userId: {

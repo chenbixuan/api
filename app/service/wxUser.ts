@@ -9,12 +9,23 @@ export default class WxUser extends global.BaseService {
     super(ctx, ctx.model.WxUser);
   }
 
+  /**
+   * 小程序的注册，直接登录
+   * @param info
+   */
   async create (info: CreateOptions) {
-    const user = await this.service.user.create(info);
-    return this.model.create({
+    const user = await this.service.user.create({
+      ...info,
+      // @ts-ignore
+      username: info.nickname
+    });
+    await this.model.create({
       ...info,
       userId: user.id,
     });
+    return {
+      token: this.ctx.helper.jwtSign(user)
+    }
   }
 
   async serviceInfo (id: number) {

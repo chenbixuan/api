@@ -13,7 +13,7 @@ export default class UserController extends global.BaseController {
   }
 
   async login () {
-    const { ctx, app } = this;
+    const { ctx } = this;
     const { username, password } = ctx.request.body;
     const user = await ctx.model.User.findOne({
       attributes: ['id', 'username', 'phoneNumber'],
@@ -24,7 +24,7 @@ export default class UserController extends global.BaseController {
       }
     });
     // @ts-ignore
-    const token = app.jwt.sign(user, app.config.jwt.secret, { expiresIn: '1h' });
+    const token = ctx.helper.jwtSign(user);
     ctx.body = {
       token,
       user,
