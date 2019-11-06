@@ -1,12 +1,20 @@
 'use strict';
 
+import _ from 'lodash';
 import {Service, Context} from 'egg';
-import {Model, CreateOptions, FindAndCountOptions} from 'sequelize';
+import {Model, CreateOptions, FindOptions} from 'sequelize';
 
 class BaseModel extends Model {};
 
 export interface IData {
   [key: string]: any
+}
+
+export interface IConnection {
+  lists: IData[],
+  count: number,
+  hasNext: boolean,
+  hasPrevious: boolean
 }
 
 export default class BaseService extends Service {
@@ -17,11 +25,35 @@ export default class BaseService extends Service {
     this.model = model;
   }
 
-  async list(options: FindAndCountOptions = {}): Promise<IData> {
-    options = options || {};
-    if (!options.order || options.order === []) options.order = [[ 'id', 'desc' ]];
-    if (!options.limit) options.limit = 10;
-    return this.model.findAndCountAll(options);
+  async list(options: FindOptions = {}): Promise<IConnection> {
+    return this.connection(options);
+  }
+
+  /**
+   * 分页结构
+   * @param options
+   */
+  async connection(options: FindOptions = {}): Promise<IConnection> {
+    _.defaults(options, {
+      offset: 0,
+      limit: 10,
+      order: [[ 'id', 'desc' ]]
+    });
+
+    const lists = await this.model.findAll(options);
+    const count = await this.model.count({
+      where: options.where,
+      include: options.include
+    });
+
+    return {
+      lists,
+      count,
+      // @ts-ignore
+      hasNext: options.offset + options.limit < count,
+      // @ts-ignore
+      hasPrevious: options.offset > 0
+    }
   }
 
   async find(id: number): Promise<IData> {
