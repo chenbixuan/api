@@ -23,14 +23,26 @@ export default class UserCardController extends global.BaseController {
 
   async index() {
     const ctx = this.ctx;
+    const user = ctx.user;
     const query = ctx.query;
     const status = query.status;
-    if (status === 'OUT') {
-      query.expire = {
-        [Op.lt]: new Date(),
-      }
-      query.status = 'UNUSED';
+    switch (status) {
+      case 'UNUSED':
+        query.expire = {
+          [Op.gt]: new Date(),
+        }
+        query.status = 'UNUSED';
+        break;
+      case 'OUT':
+        query.expire = {
+          [Op.lt]: new Date(),
+        }
+        query.status = 'UNUSED';
+        break;
+      default:
+        break;
     }
+    query.userId = user.id;
     await super.index();
   }
 }
