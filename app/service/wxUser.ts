@@ -14,17 +14,53 @@ export default class WxUser extends global.BaseService {
    * @param info
    */
   async create (info: CreateOptions) {
-    const user = await this.service.user.create({
-      ...info,
+    // @ts-ignore
+    const { openId } = info
+    if (!openId) this.ctx.throw('openId必须')
+
+    let wxUser = await this.model.findOne({
+      where: {
+        openId
+      },
+      include: [
+        {
+          model: this.ctx.model.User,
+          attributes: ['id', 'username', 'phoneNumber'],
+          as: 'user',
+        }
+      ]
+    });
+
+    // @ts-ignore
+    if (wxUser && !wxUser.user) {
+      // 异常数据，直接删掉
+      await wxUser.destroy();
+    }
+
+    let user = null;
+    if (wxUser) {
+      // 有对应的openId数据，直接返回
       // @ts-ignore
-      username: info.nickname
-    });
-    await this.model.create({
-      ...info,
-      userId: user.id,
-    });
+      user = wxUser.user;
+      // 更新用户信息
+      await wxUser.update(info);
+    } else {
+      // 创建新号
+      user = await this.service.user.create({
+        ...info,
+        // @ts-ignore
+        username: info.nickname
+      });
+      wxUser = await this.model.create({
+        ...info,
+        // @ts-ignore
+        userId: user.id,
+      });
+    }
+
     return {
-      token: this.ctx.helper.jwtSign(user)
+      token: this.ctx.helper.jwtSign(user),
+      wxUser,
     }
   }
 
