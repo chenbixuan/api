@@ -65,7 +65,7 @@ export default {
       username: user.username,
       phoneNumber: user.phoneNumber,
     }, app.config.jwt.secret, {
-      expiresIn: '1h'
+      expiresIn: '30d'
     });
   },
   ...wx,
