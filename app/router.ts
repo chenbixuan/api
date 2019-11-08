@@ -32,7 +32,11 @@ export default function(app: Application) {
     })
   };
 
+  // 解析openId
   app.router.get('/api/wxUser/getOpenId', app.controller.wxUser.getOpenId);
+  // 获取自己的预约
+  // @ts-ignore
+  app.router.get('/api/appointment/my', app.jwt, app.controller.appointment.my);
   readDir(pre, (fullPath: string) => {
     const { dir, name } = path.parse(fullPath.replace(pre + '/', ''));
     const prefix = dir ? dir + '/' + name : name;
