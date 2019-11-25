@@ -22,6 +22,17 @@ export default class WxUserController extends global.BaseController {
     };
   }
 
+  async update() {
+    const ctx = this.ctx;
+    const user = ctx.user;
+    const body = ctx.request.body;
+    ctx.body = await this.one.model.update(body, {
+      where: {
+        userId: user.id,
+      },
+    });
+  }
+
   async index () {
     const ctx = this.ctx;
     const { search } = ctx.query;

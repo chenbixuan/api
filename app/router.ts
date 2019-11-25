@@ -37,6 +37,8 @@ export default function(app: Application) {
   // 获取自己的预约
   // @ts-ignore
   app.router.get('/api/appointment/my', app.jwt, app.controller.appointment.my);
+  // @ts-ignore
+  app.router.put('/api/wxUser', app.jwt, app.controller.wxUser.update);
   readDir(pre, (fullPath: string) => {
     const { dir, name } = path.parse(fullPath.replace(pre + '/', ''));
     const prefix = dir ? dir + '/' + name : name;
